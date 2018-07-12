@@ -4,7 +4,7 @@
 <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Tambah Lokasi Objek Wisata Alam
+        Tambah Lokasi Balai Pengelola
         <small>it all starts here</small>
       </h1>
 

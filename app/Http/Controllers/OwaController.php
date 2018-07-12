@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Owa;
 use App\LokasiOwa;
+use Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Database\Query\Builder;
@@ -18,28 +19,28 @@ class OwaController extends Controller
         if (is_null($tahun = $request->get('years')) && is_null($bulan = $request->get('months')) && is_null($lokasi = $request->get('lokasiowa_id'))) {
             $owa = Owa::select('*',DB::raw('MONTHNAME(tanggal) as bulan, YEAR(tanggal) as tahun'))
                 ->orderBy('tanggal', 'desc')
-                ->paginate(20);
+                ->paginate(15);
         }
         else if (!empty($bulan = $request->get('months')) && is_null($tahun = $request->get('years')) && is_null($lokasi = $request->get('lokasiowa_id'))) {
             $bulan = $request->get('months');
             $owa = Owa::select('*',DB::raw('MONTHNAME(tanggal) as bulan, YEAR(tanggal) as tahun'))
                 ->orderBy('tanggal', 'desc')
                 ->where(DB::raw('MONTH(tanggal)'), '=', $bulan)
-                ->paginate(20);
+                ->paginate(15);
         }
         else if (!empty($tahun = $request->get('years')) && is_null($bulan = $request->get('months')) && is_null($lokasi = $request->get('lokasiowa_id'))) {
             $tahun = $request->get('years');
             $owa = Owa::select('*',DB::raw('MONTHNAME(tanggal) as bulan, YEAR(tanggal) as tahun'))
                 ->orderBy('tanggal', 'desc')
                 ->where(DB::raw('YEAR(tanggal)'), '=', $tahun)
-                ->paginate(20);
+                ->paginate(15);
         }
         else if (!empty($lokasi = $request->get('lokasiowa_id')) && is_null($bulan = $request->get('months')) && is_null($tahun = $request->get('years'))) {
             $lokasi = $request->get('lokasiowa_id');
             $owa = Owa::select('*',DB::raw('MONTHNAME(tanggal) as bulan, YEAR(tanggal) as tahun'))
                 ->orderBy('tanggal', 'desc')
                 ->where('lokasiowa_id', $lokasi)
-                ->paginate(20);
+                ->paginate(15);
         }
         else if (!empty($bulan = $request->get('months')) && !empty($tahun = $request->get('years')) && is_null($lokasi = $request->get('lokasiowa_id'))) {
             $bulan = $request->get('months');
@@ -48,16 +49,16 @@ class OwaController extends Controller
                 ->orderBy('tanggal', 'desc')
                 ->where(DB::raw('MONTH(tanggal)'), '=', $bulan)
                 ->where(DB::raw('YEAR(tanggal)'), '=', $tahun)
-                ->paginate(20);
+                ->paginate(15);
         }
-        else if (!empty($bulan = $request->get('months')) && is_null($bulan = $request->get('months')) && !empty($lokasi = $request->get('lokasiowa_id'))) {
+        else if (!empty($bulan = $request->get('months')) && is_null($tahun = $request->get('years')) && !empty($lokasi = $request->get('lokasiowa_id'))) {
             $bulan = $request->get('months');
             $lokasi = $request->get('lokasiowa_id');
             $owa = Owa::select('*',DB::raw('MONTHNAME(tanggal) as bulan, YEAR(tanggal) as tahun'))
                 ->orderBy('tanggal', 'desc')
                 ->where(DB::raw('MONTH(tanggal)'), '=', $bulan)
                 ->where('lokasiowa_id', $lokasi)
-                ->paginate(20);
+                ->paginate(15);
         }
         else if (is_null($bulan = $request->get('months')) && !empty($tahun = $request->get('years')) && !empty($lokasi = $request->get('lokasiowa_id'))) {
             $tahun = $request->get('years');
@@ -66,7 +67,7 @@ class OwaController extends Controller
                 ->orderBy('tanggal', 'desc')
                 ->where(DB::raw('YEAR(tanggal)'), '=', $tahun)
                 ->where('lokasiowa_id', $lokasi)
-                ->paginate(20);
+                ->paginate(15);
         }
         else{
             $tahun = $request->get('years');
@@ -77,7 +78,7 @@ class OwaController extends Controller
                 ->where(DB::raw('YEAR(tanggal)'), '=', $tahun)
                 ->where(DB::raw('MONTH(tanggal)'), '=', $bulan)
                 ->where('lokasiowa_id', $lokasi)
-                ->paginate(20);
+                ->paginate(15);
         }
 
         //filter lokasi
@@ -265,7 +266,10 @@ class OwaController extends Controller
     {
         $owa = Owa::find($id);
         $owa->lokasiowa_id = $request->lokasiowa_id;
-        $owa->tanggal = $request->tanggal;
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
+        $tanggal = strtotime($tahun.'-'.$bulan.'-01');
+        $owa->tanggal = date('Y-m-d', $tanggal);
         $owa->pengunjung = $request->pengunjung;
         $owa->jumlah_penerimaan = $request->jumlah_penerimaan;
         $owa->save();
@@ -278,4 +282,26 @@ class OwaController extends Controller
         $owas->delete();
         return redirect('owa');
     }
+
+    public function excel()
+    {
+        $owas = Owa::select('*',DB::raw('MONTHNAME(tanggal) as bulan, YEAR(tanggal) as tahun'))->orderBy('tanggal', 'desc')->get();
+        $owa_array[] = array('Lokasi', 'Bulan', 'Tahun', 'Pengunjung', 'Penerimaan');
+        foreach ($owas as $owa) {
+            $owa_array[] = array(
+                'Lokasi' => $owa->lokasi->lokasi_owa,
+                'Bulan' => $owa->bulan,
+                'Tahun' => $owa->tahun,
+                'Pengunjung' => $owa->pengunjung,
+                'Penerimaan' => $owa->jumlah_penerimaan,
+            );
+        }
+        Excel::create('Data Owa', function($excel) use($owa_array){
+            $excel->setTitle('Data Owa');
+            $excel->sheet('Data Owa', function($sheet) use ($owa_array){
+                $sheet->fromArray($owa_array, null, 'A1', false, false);
+            });
+        })->download('xlsx');
+    }
+
 }

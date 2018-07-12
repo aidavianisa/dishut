@@ -5,17 +5,15 @@ namespace App\Http\Controllers;
 use App\LuasHutan;
 use App\JenisHutan;
 use App\Kabupaten;
+use Excel;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class LuasHutanController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-    	//semua
-    	$luas_hutans = LuasHutan::with('jenis_hutan')->get();
-    	//berdasarkan jenis hutan
-        //$luas_hutans = LuasHutan::with('jenis_hutan')->get()->where('jenis_hutan_id', 1);
+        $luas_hutans = LuasHutan::with('jenis_hutan')->orderBy('id', 'desc')->paginate(15);
         return view('luas_hutan/table', ['luas_hutans' => $luas_hutans]);
     }
 
@@ -62,5 +60,25 @@ class LuasHutanController extends Controller
         $luas_hutans = LuasHutan::find($id);
         $luas_hutans->delete();
         return redirect('luas_hutan');
+    }
+
+    public function excel()
+    {
+        $luas_hutans = LuasHutan::with('jenis_hutan')->orderBy('tanggal', 'desc')->get();
+        $luas_array[] = array('Hutan', 'Kabupaten', 'Tahun', 'Luas');
+        foreach ($luas_hutans as $key) {
+            $luas_array[] = array(
+                'Hutan' => $key->jenis_hutan->jenis_hutan,
+                'Kabupaten' => $key->kabupaten->kabupaten,
+                'Tahun' => $key->tanggal,
+                'Luas' => $key->luas,
+            );
+        }
+        Excel::create('Luas Hutan', function($excel) use($luas_array){
+            $excel->setTitle('Luas Hutan');
+            $excel->sheet('Luas Hutan', function($sheet) use ($luas_array){
+                $sheet->fromArray($luas_array, null, 'A1', false, false);
+            });
+        })->download('xlsx');
     }
 }

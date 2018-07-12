@@ -11,6 +11,7 @@
       </h1>
       <br>
       <button type="button" class="btn btn-primary btn-s" onclick="location.href='{{url('/luas_hutan/create')}}'">Tambah</button>
+      <a href="{{ route('luas_hutan.excel') }}" class="btn btn-success btn-s">Export ke Excel</a>
     </section>
   <!-- Main content -->
     <section class="content">
@@ -37,7 +38,7 @@
                   <tr>
                     <th>Jenis Hutan</th>
                     <th>Kabupaten</th>
-                    <th>Tanggal</th>
+                    <th>Tahun</th>
                     <th>Luas</th>
                     <th>Action</th>
                   </tr>
@@ -61,6 +62,10 @@
                   @endforeach
                 </tbody>
               </table>
+              <div class="pagination">
+                {!! $luas_hutans->render() !!}
+              </div>
+            </div>
             </div>
             <!-- /.box-body -->
           </div>

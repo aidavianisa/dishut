@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class NambahKabupatenDiWisata extends Migration
+class NambahKabupatenDiPotensiWisata extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,8 @@ class NambahKabupatenDiWisata extends Migration
      */
     public function up()
     {
-        Schema::table('wana_wisata', function (Blueprint $table) {
-            $table->integer('kabupaten_id')->nullable()->after('wisata')->unsigned();
+        Schema::table('potensi_wisata', function (Blueprint $table) {
+            $table->integer('kabupaten_id')->nullable()->after('wisata')->unsigned;
             $table->foreign('kabupaten_id')->references('id')->on('kabupaten');
         });
     }
@@ -26,7 +26,7 @@ class NambahKabupatenDiWisata extends Migration
      */
     public function down()
     {
-        Schema::table('wana_wisata', function (Blueprint $table) {
+        Schema::table('potensi_wisata', function (Blueprint $table) {
             //
         });
     }

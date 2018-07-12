@@ -42,13 +42,13 @@
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Tanggal</label>
                   <div class="col-sm-10">
-                    <input type="date" class="form-control" placeholder="Tanggal" name="tanggal" value="{{ old('tanggal') }}">
+                    <input type="year" class="form-control" placeholder="Tahun" name="tanggal" value="{{ old('tanggal') }}">
                   </div>
                 </div>
                 <div class="form-group">
                   <label class="col-sm-2 control-label">Luas</label>
                   <div class="col-sm-10">
-                    <input type="number" class="form-control" placeholder="Masukkan Luas" name="luas" value="{{ old('luas') }}">
+                    <input type="number" step="any" class="form-control" placeholder="Masukkan Luas" name="luas" value="{{ old('luas') }}">
                   </div>
                 </div>
               </div>

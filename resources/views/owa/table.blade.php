@@ -16,6 +16,7 @@
       <br>
 
       <button type="button" class="btn btn-primary btn-s" onclick="location.href='{{url('/owa/create')}}'">Tambah</button>
+      <a href="{{ route('owa.excel') }}" class="btn btn-success btn-s">Export ke Excel</a>
 
       <div class="pull-right" style="display: inline-block;">
       <form method="PUT" action="/owa/" accept-charset="utf-8">

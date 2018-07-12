@@ -20,7 +20,7 @@
             <form action="/wisata/{{$wisata->id}}" method="post" class="form-horizontal">
               <div class="box-body">
                 <div class="form-group">
-                  <label class="col-sm-2 control-label">Wisata</label>
+                  <label class="col-sm-2 control-label">Nama Wisata</label>
                   <div class="col-sm-10">
                     <input type="text" class="form-control" placeholder="Wisata" name="wisata" value="{{ $wisata->wisata }}">
                   </div>
@@ -35,6 +35,23 @@
                     </select>
                   </div>
                 </div>
+                <!-- <div class="form-group">
+                  <label class="col-sm-2 control-label">Lokasi</label>
+                  <div class="col-sm-10">
+                    <a class="btn btn-primary btn-s" onclick="getLocation()">Dapatkan Lokasi</a>
+                    <p id="demo"></p>
+                    <div id="map" style="width:auto;height:200px;"></div>
+                  </div>
+                </div>
+                <input id="lat" class="form-control hidden" name="latitude" value="{{ $item->latitude }}">
+                <input id="long" class="form-control hidden" name="longitude" value="{{ $item->longitude }}"> -->
+
+                <!-- <div class="form-group">
+                  <label class="col-sm-2 control-label">Keterangan</label>
+                  <div class="col-sm-10">
+                    <input type="text" class="form-control" placeholder="Masukkan Keterangan" name="keterangan" value="{{ $item->keterangan}}">
+                  </div>
+                </div> -->
               </div>
               <!-- /.box-body -->
               <div class="box-footer">
@@ -48,6 +65,35 @@
           </div>
     </section>
   <!-- /.content -->
+  <!-- <script>
+      var x = document.getElementById("demo");
+      var map;
+      var lat = document.getElementById("lat");
+      var long = document.getElementById("long");
+
+      function getLocation() {
+          if (navigator.geolocation) {
+              navigator.geolocation.getCurrentPosition(showPosition);
+          } else { 
+              x.innerHTML = "Geolocation is not supported by this browser.";
+          }
+      }
+
+      function showPosition(position) {
+          x.innerHTML = "Latitude: " + position.coords.latitude + 
+          "<br>Longitude: " + position.coords.longitude;
+          var myCenter = new google.maps.LatLng(position.coords.latitude,position.coords.longitude);
+          map = new google.maps.Map(document.getElementById('map'), {
+              center: {lat: position.coords.latitude, lng: position.coords.longitude},
+              zoom: 8, mapTypeId: google.maps.MapTypeId.HYBRID
+            });
+          var marker = new google.maps.Marker({position:myCenter});
+          marker.setMap(map);
+          lat.value = position.coords.latitude;
+          long.value = position.coords.longitude;
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyA56N7R4u4rWcb6ixM7eKoF-izl2U0w65Q&callback=initMap"></script> -->
 
 
 @endsection

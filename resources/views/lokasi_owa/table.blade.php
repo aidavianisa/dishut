@@ -6,7 +6,7 @@
 <!-- Content Header (Page header) -->
     <section class="content-header">
       <h1>
-        Lokasi Objek Wisata Alam
+        Lokasi Balai Pengelola
         <small>it all starts here</small>
       </h1>
       <br>
@@ -18,7 +18,7 @@
         <div class="col-xs-12">
           <div class="box">
             <div class="box-header">
-              <h3 class="box-title">Tabel Lokasi Objek Wisata Alam</h3>
+              <h3 class="box-title">Tabel Lokasi Balai Pengelola</h3>
               <!-- <div class="box-tools">
                 <div class="input-group input-group-sm" style="width: 150px;">
                   <input type="text" name="table_search" class="form-control pull-right" placeholder="Search">

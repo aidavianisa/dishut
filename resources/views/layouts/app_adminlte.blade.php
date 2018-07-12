@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="{{ app()->getLocale() }}">
 <head>
@@ -8,7 +7,7 @@
   <!-- CSRF Token -->
   <meta name="csrf-token" content="{{ csrf_token() }}">
 
-  <title>AdminLTE 2 | Blank Page</title>
+  <title>@yield('title')</title>
   <!-- Tell the browser to be responsive to screen width -->
   <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
   <!-- Bootstrap 3.3.7 -->
@@ -43,7 +42,7 @@
     <!-- Logo -->
     <a href="../../index2.html" class="logo">
       <!-- mini logo for sidebar mini 50x50 pixels -->
-      <span class="logo-mini"><b>A</b>LT</span>
+      <span class="logo-mini"><b>D</b>ST</span>
       <!-- logo for regular state and mobile devices -->
       <span class="logo-lg"><b>Dishut</b>Statistik</span>
     </a>
@@ -226,17 +225,10 @@
       <!-- sidebar menu: : style can be found in sidebar.less -->
       <ul class="sidebar-menu" data-widget="tree">
         <li class="header">MAIN NAVIGATION</li>
-        <li class="treeview">
-          <a href="#">
+        <li>
+          <a href="{{ action('HomeController@index') }}">
             <i class="fa fa-dashboard"></i> <span>Dashboard</span>
-            <span class="pull-right-container">
-              <i class="fa fa-angle-left pull-right"></i>
-            </span>
           </a>
-          <ul class="treeview-menu">
-            <li><a href="{{ action('HomeController@index') }}"><i class="fa fa-circle-o"></i> Dashboard v1</a></li>
-            <li><a href="../../index2.html"><i class="fa fa-circle-o"></i> Dashboard v2</a></li>
-          </ul>
         </li>   
         <li class="treeview">
           <a href="#">
@@ -247,25 +239,27 @@
           </a>
           <ul class="treeview-menu">
             <li><a href="{{ action('LuasHutanController@index') }}"><i class="fa fa-circle-o"></i> Seluruh Luas Hutan</a></li>
-            <li><a href="{{ action('LuasHutanBedaController@index',['hutan'=>1]) }}"><i class="fa fa-circle-o"></i> Hutan Produksi</a></li>
-            <li><a href="{{ action('LuasHutanBedaController@index',['hutan'=>2]) }}"><i class="fa fa-circle-o"></i> Hutan Lindung</a></li>
-            <li><a href="{{ action('LuasHutanBedaController@index',['hutan'=>3]) }}"><i class="fa fa-circle-o"></i> Cagar Alam</a></li>
-            <li><a href="{{ action('LuasHutanBedaController@index',['hutan'=>4]) }}"><i class="fa fa-circle-o"></i> Suaka Margasatwa</a></li>
-            <li><a href="{{ action('LuasHutanBedaController@index',['hutan'=>5]) }}"><i class="fa fa-circle-o"></i> Taman Wisata Alam</a></li>
-            <li><a href="{{ action('LuasHutanBedaController@index',['hutan'=>6]) }}"><i class="fa fa-circle-o"></i> Taman Nasional</a></li>
-            <li><a href="{{ action('LuasHutanBedaController@index',['hutan'=>7]) }}"><i class="fa fa-circle-o"></i> Taman Hutan Raya</a></li>
+            <li><a href="{{ action('HutanProduksiController@index') }}"><i class="fa fa-circle-o"></i> Hutan Produksi</a></li>
+            <li><a href="{{ action('HutanLindungController@index') }}"><i class="fa fa-circle-o"></i> Hutan Lindung</a></li>
+            <li><a href="{{ action('CagarAlamController@index') }}"><i class="fa fa-circle-o"></i> Cagar Alam</a></li>
+            <li><a href="{{ action('SuakaMargasatwaController@index') }}"><i class="fa fa-circle-o"></i> Suaka Margasatwa</a></li>
+            <li><a href="{{ action('TamanWisataAlamController@index') }}"><i class="fa fa-circle-o"></i> Taman Wisata Alam</a></li>
+            <li><a href="{{ action('TamanNasionalController@index') }}"><i class="fa fa-circle-o"></i> Taman Nasional</a></li>
+            <li><a href="{{ action('TamanHutanRayaController@index') }}"><i class="fa fa-circle-o"></i> Taman Hutan Raya</a></li>
           </ul>
         </li>
          <li class="treeview">
           <a href="#">
-            <i class="fa fa-table"></i> <span>Manajemen Balai</span>
+            <i class="fa fa-table"></i> <span>Balai Pengelola Hutan</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
             </span>
           </a>
           <ul class="treeview-menu">
             <li><a href="{{ action('OwaController@index') }}"><i class="fa fa-circle-o"></i> Pengunjung dan Pemasukkan</a></li>
-            <li><a href="{{ action('OwaController@grafik') }}"><i class="fa fa-circle-o"></i> Grafik Objek Wisata Alam</a></li>
+            <li><a href="{{ action('OwaController@grafik') }}"><i class="fa fa-circle-o"></i> Grafik Pengunjung Pemasukan</a></li>
+            <li><a href="{{ action('DataLuasController@index') }}"><i class="fa fa-circle-o"></i> Lahan Kritis</a></li>
+            <li><a href="{{ action('DataLuasController@kebakaran') }}"><i class="fa fa-circle-o"></i> Kebakaran</a></li>
           </ul>
         </li>
         <li class="treeview">
@@ -282,6 +276,18 @@
         </li>
         <li class="treeview">
           <a href="#">
+            <i class="fa fa-table"></i> <span>Potensi Wisata</span>
+            <span class="pull-right-container">
+              <i class="fa fa-angle-left pull-right"></i>
+            </span>
+          </a>
+          <ul class="treeview-menu">
+            <li><a href="{{ action('PotensiWisataController@index') }}"><i class="fa fa-circle-o"></i> Data Potensi Wisata</a></li>
+            <li><a href="{{ action('PotensiWisataController@map') }}"><i class="fa fa-circle-o"></i> Lokasi Potensi WIsata</a></li>
+          </ul>
+        </li>
+        <li class="treeview">
+          <a href="#">
             <i class="fa fa-table"></i> <span>Informasi Master</span>
             <span class="pull-right-container">
               <i class="fa fa-angle-left pull-right"></i>
@@ -290,7 +296,7 @@
           <ul class="treeview-menu">
             <li><a href="{{ action('JenisHutanController@index') }}"><i class="fa fa-circle-o"></i> Jenis Hutan</a></li>
             <li><a href="{{ action('KabupatenController@index') }}"><i class="fa fa-circle-o"></i> Kabupaten</a></li>
-            <li><a href="{{ action('LokasiOwaController@index') }}"><i class="fa fa-circle-o"></i> Lokasi Objek Wisata Alam</a></li>
+            <li><a href="{{ action('LokasiOwaController@index') }}"><i class="fa fa-circle-o"></i> Lokasi Balai Pengelola</a></li>
           </ul>
         </li>
       </ul>

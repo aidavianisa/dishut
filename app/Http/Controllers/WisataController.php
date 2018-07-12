@@ -50,6 +50,9 @@ class WisataController extends Controller
         $wisata = new Wisata;
         $wisata->wisata = $request->wisata;
         $wisata->kabupaten_id = $request->kabupaten_id;
+        $wisata->latitude = $request->latitude;
+        $wisata->longitude = $request->longitude;
+        $wisata->keterangan = $request->keterangan;
         $wisata->save();
         return redirect('wisata');
     }
@@ -66,6 +69,9 @@ class WisataController extends Controller
         $wisata = Wisata::find($id);
         $wisata->wisata = $request->wisata;
         $wisata->kabupaten_id = $request->kabupaten_id;
+        $wisata->latitude = $request->latitude;
+        $wisata->longitude = $request->longitude;
+        $wisata->keterangan = $request->keterangan;
         $wisata->save();
         return redirect('wisata')->with('message','item has been updated successfully');
     }
