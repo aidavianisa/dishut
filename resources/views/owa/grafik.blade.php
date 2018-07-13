@@ -97,8 +97,8 @@
       <!-- /.row -->
 
       <!-- Coba ramal bulan -->
-      <?= number_format((double)$key['pengunjungs'], 0, ',', '.') ?>
-      <?= number_format((double)$ramal_pengunjung1, 0, ',', '.') ?>
+      <!-- <?= number_format((double)$key['pengunjungs'], 0, ',', '.') ?>
+      <?= number_format((double)$ramal_pengunjung1, 0, ',', '.') ?> -->
 
           <div class="box box-success">
             <div class="box-header with-border">

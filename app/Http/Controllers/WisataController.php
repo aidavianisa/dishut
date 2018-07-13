@@ -57,6 +57,13 @@ class WisataController extends Controller
         return redirect('wisata');
     }
 
+    public function lihat($id)
+    {
+        $wisata = Wisata::find($id);
+        $kabupaten = Kabupaten::select('kabupaten')->where('id', $wisata->kabupaten_id)->get();;
+        return view('wisata/lihat', ['wisata' => $wisata, 'kabupaten' => $kabupaten]);
+    }
+
     public function edit($id)
     {
         $wisata = Wisata::find($id);

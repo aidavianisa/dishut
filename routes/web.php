@@ -90,6 +90,7 @@ Route::get('/wisata/create', 'WisataController@create');
 Route::post('/wisata', 'WisataController@store');
 Route::get('/wisata/{id}', 'WisataController@show');
 Route::get('/wisata/{id}/edit', 'WisataController@edit');
+Route::get('/wisata/{id}/lihat', 'WisataController@lihat');
 Route::put('/wisata/{id}', 'WisataController@update');
 Route::delete('/wisata/{id}', 'WisataController@destroy');
 

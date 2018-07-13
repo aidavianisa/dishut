@@ -15,6 +15,28 @@
     </section>
   <!-- Main content -->
     <section class="content">
+      <div class="box box-success">
+            <div class="box-header with-border">
+              <h3 class="box-title">Grafik Luas Hutan Lindung</h3>
+
+              <div class="box-tools pull-right">
+                <button type="button" class="btn btn-box-tool" data-widget="collapse"><i class="fa fa-minus"></i>
+                </button>
+                <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
+              </div>
+            </div>
+            <div class="box-body">
+                <!-- {{ Form::open(array('url' => '/owa', 'method' => 'get')) }}
+                    <?php 
+                    date_default_timezone_set("Asia/Jakarta");
+                    $tanggal = date('Y');
+                    echo Form::selectRange('tahun', 2012, 2025, $tanggal); ?>
+                {{ Form::close() }} -->
+              <div id="container" style="min-width: auto; height: auto; margin: 0 auto"></div>
+            </div>
+            <!-- /.box-body -->
+          </div>
+
       <div class="row">
         <div class="col-xs-12">
           <div class="box">
@@ -74,4 +96,96 @@
       </div>
     </section>
   <!-- /.content -->
+
+  <script type="text/javascript">
+    let tahun;
+    tahun = "<?php echo json_encode($jarak_tahun) ?>";
+    tahun = JSON.parse(tahun);
+   
+    let list;
+    list = '<?php echo json_encode($list) ?>'
+    list = JSON.parse(list);
+   
+    Highcharts.chart('container', {
+              title: {
+                text: 'Data Luas Hutan Lindung'
+              },
+              chart: {
+                  type: 'area'
+              },
+              xAxis : {
+                  // categories: [
+                  //   'Jan','Feb','Mar','Apr','Mei','Juni','Juli','Ags','Sep','Okt','Nov','Des'
+                  // ]
+                  categories: tahun
+              },
+              yAxis: {
+                title: {
+                  text: 'Jumlah Kasus'
+                }
+              },
+
+              series: getDataHutanTahun(list, tahun),
+
+              responsive: {
+                  rules: [{
+                      condition: {
+                          maxWidth: 500
+                      },
+                      chartOptions: {
+                          legend: {
+                              align: 'center',
+                              verticalAlign: 'bottom',
+                              layout: 'horizontal'
+                          },
+                          yAxis: {
+                              labels: {
+                                  align: 'left',
+                                  x: 0,
+                                  y: -5
+                              },
+                              title: {
+                                  text: null
+                              }
+                          },
+                          subtitle: {
+                              text: null
+                          },
+                          credits: {
+                              enabled: false
+                          }
+                      }
+                  }]
+              }
+
+              
+            });
+    function getDataHutanTahun(list, tahun){
+      datas = [];
+      for(let i = 0; i < list.length; i++){
+        data = {};
+        data['name'] = list[i]['jenis_hutan'];
+        data['data'] = [];
+        k = 0;
+        for(let j = 0; j < tahun.length; j++){
+          try{
+            tahun_obj = list[i]['data_luas'][k]['tanggal'];            
+          }
+          catch(err){
+            tahun_obj = 0;
+          }
+          if(tahun_obj != tahun[j]){
+            data['data'].push(0);
+          }
+          else{
+            data['data'].push( list[i]['data_luas'][k]['luass']);
+            k++;
+          }
+        }
+        datas.push(data);
+
+      }
+      return datas;
+    }
+  </script>
 @endsection

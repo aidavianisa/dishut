@@ -11,10 +11,69 @@ use Illuminate\Support\Facades\DB;
 
 class LuasHutanController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
+        $tahun = 2016;
+        $jenis_hutan = JenisHutan::all();
+
+        foreach ($jenis_hutan as $key) {
+            $data_luas = LuasHutan::select('*', DB::raw('SUM(luas) as luass'))
+            ->where('jenis_hutan_id', '=', $key->id)
+            ->groupBy(DB::raw("YEAR(tanggal)"))
+            ->join('jenis_hutan', 'jenis_hutan.id', '=', 'luas_hutan.jenis_hutan_id')
+            ->get();
+
+            $tahun_awal = LuasHutan::min('tanggal');
+            $tahun_akhir = LuasHutan::max('tanggal');
+
+            $j = 0;
+            for($i = $tahun_awal; $i <= $tahun_akhir; $i++){
+                $jarak_tahun[$j] = $i;
+                $j++;
+            }
+
+            // foreach ($data_luas as $key) {
+            //     $tahuns = $key->tanggal;
+            // }
+
+            // for($i=0; $i<$j; $i++){
+            //     if($tahuns == $tahun_awal){
+            //         $data_luas->urut = $i;
+            //         break;
+            //     }
+            //     else{
+            //         $tahun_awal++;
+            //     }
+            // }
+
+            $list[] = array(
+                'jenis_hutan' => $key->jenis_hutan,
+                'data_luas' => $data_luas,
+            );
+
+            // if($tahun_akhir <= $tahun){
+            //     $list[] = array(
+            //         'jenis_hutan' => $key->jenis_hutan,
+            //         'data_luas' => $data_luas,
+            //     );
+            // }
+        }
+
+        // $tahun_awal = LuasHutan::min('tanggal');
+        // $tahun_akhir = LuasHutan::max('tanggal');
+
+        // $j = 0;
+        // for($i = $tahun_awal; $i <= $tahun_akhir; $i++){
+        //     $jarak_tahun[$j] = $i;
+        //     $j++;
+        // }
+        //dd($list);//dapetin total tahun
         $luas_hutans = LuasHutan::with('jenis_hutan')->orderBy('id', 'desc')->paginate(15);
-        return view('luas_hutan/table', ['luas_hutans' => $luas_hutans]);
+        return view('luas_hutan/table', [
+            'luas_hutans' => $luas_hutans,
+            'list' => $list,
+            'jarak_tahun' => $jarak_tahun,
+        ]);
     }
 
     public function create()

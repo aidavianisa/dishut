@@ -17,9 +17,63 @@ class DataLuasController extends Controller
     //LAHAN KRITIS
     public function index(Request $request)
     {
+        $balai = LokasiOwa::all();
+
+        foreach($balai as $key){
+            $luas = DataLuas::select('*', DB::raw('SUM(luas) as luass'))
+            ->where('jenis_data_id', '=', 1)
+            ->where('lokasiowa_id', '=', $key->id)
+            ->groupBy(DB::raw("YEAR(tahun)"))
+            ->join('lokasi_owas', 'lokasi_owas.id', '=', 'data_luas.lokasiowa_id')
+            ->get();
+
+            $tahun_awal = DataLuas::where('jenis_data_id', '=', 1)->min('tahun');
+            $tahun_akhir = DataLuas::where('jenis_data_id', '=', 1)->max('tahun');
+
+            $j = 0;
+            for($i = $tahun_awal; $i <= $tahun_akhir; $i++){
+                $jarak_tahun[$j] = $i;
+                $j++;
+            }
+
+            $list[] = array(
+                'jenis_hutan' => $key->lokasi_owa,
+                'luas' => $luas,
+            );
+        }
+
+        //dd($list);
+        // $jenis_data = JenisDataLuas::find(1);
+
+        // $luas = DataLuas::select('*', DB::raw('SUM(luas) as luass'))
+        // ->where('jenis_data_id', '=', 1)
+        // ->groupBy(DB::raw("YEAR(tahun)"))
+        // ->get();
+
+        // $tahun_awal = DataLuas::where('jenis_data_id', '=', 1)->min('tahun');
+        // $tahun_akhir = DataLuas::where('jenis_data_id', '=', 1)->max('tahun');
+
+        // $j = 0;
+        // for($i = $tahun_awal; $i <= $tahun_akhir; $i++){
+        //     $jarak_tahun[$j] = $i;
+        //     $j++;
+        // }
+
+        // $list[] = array(
+        //     'jenis_hutan' => 'Lahan Kritis',
+        //     'luas' => $luas,
+        // );
+        //dd($list);
+
     	$data_luas = DataLuas::select('*')->where('jenis_data_id', 1)->orderBy('tahun', 'desc')->paginate(20);
+
         $nama_data = 'Lahan Kritis';
-    	return view('data_luas/table', ['data_luas' => $data_luas, 'nama_data' => $nama_data]);
+    	return view('data_luas/table', [
+            'data_luas' => $data_luas,
+            'nama_data' => $nama_data,
+            'list' => $list,
+            'jarak_tahun' => $jarak_tahun,
+        ]);
     }
 
     public function create(Request $request)
@@ -93,9 +147,39 @@ class DataLuasController extends Controller
     //KEBAKARAN
     public function kebakaran(Request $request)
     {
+        $balai = LokasiOwa::all();
+
+        foreach($balai as $key){
+            $luas = DataLuas::select('*', DB::raw('SUM(luas) as luass'))
+            ->where('jenis_data_id', '=', 2)
+            ->where('lokasiowa_id', '=', $key->id)
+            ->groupBy(DB::raw("YEAR(tahun)"))
+            ->join('lokasi_owas', 'lokasi_owas.id', '=', 'data_luas.lokasiowa_id')
+            ->get();
+
+            $tahun_awal = DataLuas::where('jenis_data_id', '=', 2)->min('tahun');
+            $tahun_akhir = DataLuas::where('jenis_data_id', '=', 2)->max('tahun');
+
+            $j = 0;
+            for($i = $tahun_awal; $i <= $tahun_akhir; $i++){
+                $jarak_tahun[$j] = $i;
+                $j++;
+            }
+
+            $list[] = array(
+                'jenis_hutan' => $key->lokasi_owa,
+                'luas' => $luas,
+            );
+        }
+
         $data_luas = DataLuas::select('*')->where('jenis_data_id', 2)->orderBy('tahun', 'desc')->paginate(20);
         $nama_data = 'Kebakaran';
-        return view('data_luas/table_kebakaran', ['data_luas' => $data_luas, 'nama_data' => $nama_data]);
+        return view('data_luas/table_kebakaran', [
+            'data_luas' => $data_luas, 
+            'nama_data' => $nama_data,
+            'list' => $list,
+            'jarak_tahun' => $jarak_tahun,
+        ]);
     }
 
     public function create_kebakaran(Request $request)

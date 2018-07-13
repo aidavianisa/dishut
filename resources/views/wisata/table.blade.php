@@ -51,6 +51,7 @@
                       <td>{{ $key->kabupaten->kabupaten }}</td>
                       <td>
                         <form action="/wisata/{{$key->id}}" method="post">
+                          <a class="btn btn-round btn-default btn-xs" href="/wisata/{{$key->id}}/lihat">Lihat</a>
                           <a class="btn btn-round btn-info btn-xs" href="/wisata/{{$key->id}}/edit">Edit</a>
                           <input class="btn btn-round btn-danger btn-xs" type="submit" name="submit" value="Hapus">
                           {{ csrf_field() }}
