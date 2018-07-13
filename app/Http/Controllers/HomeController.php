@@ -42,6 +42,15 @@ class HomeController extends Controller
         $tahun = 2016;
         //dd($tahun);
 
+        // if (is_null($tahun = $request->get('years')) ) {
+        //     // date_default_timezone_set("Asia/Jakarta");
+        //     // $tahun = date('Y');
+        //     $tahun = 2016;
+        // }
+        // else{
+        //     $tahun = $request->get('years');
+        // }
+
         //---RAMAL PERTAHUN-----
         //menentukan total pertahun
         $total = Owa::select(DB::raw('SUM(pengunjung) as pengunjungs, SUM(jumlah_penerimaan) as penerimaans'))->where(DB::raw('YEAR(tanggal)'), '=', $tahun)->groupBy(DB::raw("YEAR(tanggal)"))->get();
@@ -59,6 +68,34 @@ class HomeController extends Controller
                 }
             }
         }
+
+        //akhir menentukan total pertahun
+
+        //ramal
+        for ($i=2012; $i <=$tahun; $i++) { 
+            if($i == 2012){
+                $data = Owa::select(DB::raw('SUM(pengunjung) as pengunjungs, SUM(jumlah_penerimaan) as penerimaans'))->where(DB::raw('YEAR(tanggal)'), '=', $i)->groupBy(DB::raw("YEAR(tanggal)"))->get();
+                foreach ($data as $key) {
+                    $ramal_pengunjung = (double)$key->pengunjungs;
+                    $ramal_penerimaan = (double)$key->penerimaans;
+                    $err_pengunjung = 0;
+                    $err_penerimaan = 0;
+                }
+            }
+            else{
+                $data = Owa::select(DB::raw('SUM(pengunjung) as pengunjungs, SUM(jumlah_penerimaan) as penerimaans'))->where(DB::raw('YEAR(tanggal)'), '=', $i)->groupBy(DB::raw("YEAR(tanggal)"))->get();
+                foreach ($data as $key) {
+                    $ramal_pengunjung = (0.9 * (double)$key->pengunjungs) + ((1 - 0.9)* (double)$ramal_pengunjung_lama);
+                    $ramal_penerimaan = (0.9 * (double)$key->penerimaans) + ((1 - 0.9)* (double)$ramal_penerimaan_lama);
+                    $err_pengunjung = (abs((double)$ramal_pengunjung_lama - (double)$key->pengunjung))/ (double)$key->pengunjungs * 100;
+                    $err_penerimaan = (abs((double)$ramal_penerimaan_lama - (double)$key->penerimaans))/ (double)$key->penerimaans * 100;
+                }
+            }
+            $ramal_pengunjung_lama = (double)$ramal_pengunjung;
+            $ramal_penerimaan_lama = (double)$ramal_penerimaan;
+        }
+        //akhir ramal
+        //----AKHIR RAMAL PERTAHUN----
 
         //GRAFIK LUAS HUTAN
         $jenis_hutan = JenisHutan::all();
@@ -133,7 +170,6 @@ class HomeController extends Controller
                 'tahun_lahan_kritis' => $tahun_lahan_kritis,
                 'luas_kebakaran' => $luas_kebakaran,
                 'tahun_kebakaran' => $tahun_kebakaran,
-
             );
         }
         //dd($balai);
@@ -218,6 +254,7 @@ class HomeController extends Controller
             );
 
         return view('home', ['data' => $data,
+                             'now' => $tahun,
                              'total' => $total,
                              'total_lama' => $total_lama,
                              'tahun' => $tahun,
@@ -225,6 +262,13 @@ class HomeController extends Controller
                              'balai' => $balai,
                              'persen_pengunjungs' => $persen_pengunjungs,
                              'persen_penerimaans' => $persen_penerimaans,
+                             'total' => $total,
+                             'persen_pengunjungs' => $persen_pengunjungs,
+                             'persen_penerimaans' => $persen_penerimaans,
+                             'ramal_pengunjung' => $ramal_pengunjung,
+                             'ramal_penerimaan' => $ramal_penerimaan,
+                             'err_pengunjung' => $err_pengunjung,
+                             'err_penerimaan' => $err_penerimaan,
                             ]);
 
         // Mapper::map(-7.5360639, 112.2384017,['marker' => false,  'type' => 'HYBRID']);

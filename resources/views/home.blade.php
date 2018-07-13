@@ -15,9 +15,9 @@
         <p>Disini Anda bisa mengelola data Pemasukan dan Pengunjung Objek Wisata Alam, Luas Lahan Kritis, Luas Kebakaran, dan tempat Objek Wisata Alam</p>
       </div>
 
-      <!-- Info boxes -->
+      <!-- Info boxes Pengunjung-->
       <div class="row">
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-4 col-sm-6 col-xs-12">
           <div class="info-box">
             <span class="info-box-icon bg-teal-active color-palette"><i class="ion ion-ios-people-outline"></i></span>
 
@@ -33,7 +33,7 @@
           <!-- /.info-box -->
         </div>
         <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-4 col-sm-6 col-xs-12">
           <div class="info-box">
             <span class="info-box-icon bg-teal color-palette"><?= number_format((double)$persen_pengunjungs, 0, '.', '') ?>%</span>
 
@@ -53,7 +53,28 @@
         <!-- fix for small devices only -->
         <div class="clearfix visible-sm-block"></div>
 
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-teal disabled color-palette"><i class="ion ion-ios-cart-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Prediksi Pengunjung <?= $now+1 ?></span>
+              <span class="info-box-number"><?= number_format((double)$ramal_pengunjung, 0, ',', '.') ?> orang</span>
+              <span class="progress-description">
+                <b><?= number_format((double)$err_pengunjung, 2, ',', '.') ?></b>% perubahan
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+      </div>
+      <!-- /.row -->
+
+      <!-- Info boxes Penerimaan-->
+      <div class="row">
+        <div class="col-md-4 col-sm-6 col-xs-12">
           <div class="info-box">
             <span class="info-box-icon bg-yellow-active color-palette"><i class="ion ion-ios-cart-outline"></i></span>
 
@@ -69,7 +90,7 @@
           <!-- /.info-box -->
         </div>
         <!-- /.col -->
-        <div class="col-md-3 col-sm-6 col-xs-12">
+        <div class="col-md-4 col-sm-6 col-xs-12">
           <div class="info-box">
             <span class="info-box-icon bg-yellow color-palette"><?= number_format((double)$persen_penerimaans, 0, '.', '') ?>%</i></span>
 
@@ -85,6 +106,27 @@
           <!-- /.info-box -->
         </div>
         <!-- /.col -->
+
+        <!-- fix for small devices only -->
+        <div class="clearfix visible-sm-block"></div>
+
+        <div class="col-md-4 col-sm-6 col-xs-12">
+          <div class="info-box">
+            <span class="info-box-icon bg-yellow disabled color-palette"><i class="ion ion-ios-cart-outline"></i></span>
+
+            <div class="info-box-content">
+              <span class="info-box-text">Prediksi Penerimaan <?= $now+1 ?></span>
+              <span class="info-box-number">Rp <?= number_format((double)$ramal_penerimaan, 0, ',', '.') ?></span>
+              <span class="progress-description">
+                <b><?= number_format((double)$err_penerimaan, 2, ',', '.') ?></b>% perubahan
+              </span>
+            </div>
+            <!-- /.info-box-content -->
+          </div>
+          <!-- /.info-box -->
+        </div>
+        <!-- /.col -->
+        
       </div>
       <!-- /.row -->
 
