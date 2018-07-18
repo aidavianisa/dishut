@@ -74,8 +74,8 @@ class HomeController extends Controller
         //ramal
         for ($i=2012; $i <=$tahun; $i++) { 
             if($i == 2012){
-                $data = Owa::select(DB::raw('SUM(pengunjung) as pengunjungs, SUM(jumlah_penerimaan) as penerimaans'))->where(DB::raw('YEAR(tanggal)'), '=', $i)->groupBy(DB::raw("YEAR(tanggal)"))->get();
-                foreach ($data as $key) {
+                $data_owa = Owa::select(DB::raw('SUM(pengunjung) as pengunjungs, SUM(jumlah_penerimaan) as penerimaans'))->where(DB::raw('YEAR(tanggal)'), '=', $i)->groupBy(DB::raw("YEAR(tanggal)"))->get();
+                foreach ($data_owa as $key) {
                     $ramal_pengunjung = (double)$key->pengunjungs;
                     $ramal_penerimaan = (double)$key->penerimaans;
                     $err_pengunjung = 0;
@@ -83,8 +83,8 @@ class HomeController extends Controller
                 }
             }
             else{
-                $data = Owa::select(DB::raw('SUM(pengunjung) as pengunjungs, SUM(jumlah_penerimaan) as penerimaans'))->where(DB::raw('YEAR(tanggal)'), '=', $i)->groupBy(DB::raw("YEAR(tanggal)"))->get();
-                foreach ($data as $key) {
+                $data_owa = Owa::select(DB::raw('SUM(pengunjung) as pengunjungs, SUM(jumlah_penerimaan) as penerimaans'))->where(DB::raw('YEAR(tanggal)'), '=', $i)->groupBy(DB::raw("YEAR(tanggal)"))->get();
+                foreach ($data_owa as $key) {
                     $ramal_pengunjung = (0.9 * (double)$key->pengunjungs) + ((1 - 0.9)* (double)$ramal_pengunjung_lama);
                     $ramal_penerimaan = (0.9 * (double)$key->penerimaans) + ((1 - 0.9)* (double)$ramal_penerimaan_lama);
                     $err_pengunjung = (abs((double)$ramal_pengunjung_lama - (double)$key->pengunjung))/ (double)$key->pengunjungs * 100;

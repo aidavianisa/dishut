@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class NambahKabupatenDiPotensiWisata extends Migration
+class NambahPotensiidKeGambar extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class NambahKabupatenDiPotensiWisata extends Migration
      */
     public function up()
     {
-        Schema::table('potensi_wisata', function (Blueprint $table) {
-            $table->integer('kabupaten_id')->nullable()->after('wisata')->unsigned;
-            $table->foreign('kabupaten_id')->references('id')->on('kabupaten');
+        Schema::table('gambar', function (Blueprint $table) {
+            $table->integer('potensi_id')->nullable()->after('id')->unsigned();
+            $table->foreign('potensi_id')->references('id')->on('potensi_wisata');
         });
     }
 
@@ -26,7 +26,7 @@ class NambahKabupatenDiPotensiWisata extends Migration
      */
     public function down()
     {
-        Schema::table('potensi_wisata', function (Blueprint $table) {
+        Schema::table('gambar', function (Blueprint $table) {
             //
         });
     }
